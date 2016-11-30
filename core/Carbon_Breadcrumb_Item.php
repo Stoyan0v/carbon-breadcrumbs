@@ -151,7 +151,7 @@ abstract class Carbon_Breadcrumb_Item extends Carbon_Breadcrumb_Factory {
 	 * @param array $attributes The new link attributes.
 	 */
 	public function set_attributes( $attributes = array() ) {
-		$this->attributes = $attributes;
+		$this->attributes = array_merge($this->attributes, $attributes);
 	}
 
 	/**

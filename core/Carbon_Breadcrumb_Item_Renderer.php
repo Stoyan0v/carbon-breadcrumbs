@@ -100,6 +100,7 @@ class Carbon_Breadcrumb_Item_Renderer {
 	 *
 	 * @return string $output The output HTML.
 	 */
+	
 	public function render_link_before() {
 		$trail_renderer = $this->get_trail_renderer();
 		$item_link = $this->get_item_link();
@@ -170,7 +171,10 @@ class Carbon_Breadcrumb_Item_Renderer {
 	 */
 	public function get_item_attributes_html() {
 		$item = $this->get_item();
-
+		$trail_renderer = $this->get_trail_renderer();
+		
+		$this->add_last_item_class_name();
+		
 		// get the item attributes
 		$item_attributes = apply_filters( 'carbon_breadcrumbs_item_attributes', $item->get_attributes(), $item );
 
@@ -198,6 +202,46 @@ class Carbon_Breadcrumb_Item_Renderer {
 
 		return $trail_renderer->get_last_item_link() || $index < $total_items;
 	}
+
+	/**
+	 * Whether is the last item.
+	 *
+	 * @access public
+	 *
+	 * @return bool
+	 */
+	public function is_last_item() {
+		$trail = $this->get_trail();
+		$total_items = $trail->get_total_items();
+		$index = $this->get_index();
+
+		return $index == $total_items;
+	}
+
+	/**
+	 * Whether is the last item.
+	 *
+	 * @access public
+	 *
+	 * @return bool
+	 */
+	public function add_last_item_class_name() {
+		$item = $this->get_item();
+		$trail_renderer = $this->get_trail_renderer();
+		
+		if ( $trail_renderer->get_last_item_link() && $this->is_last_item() ) {
+			$class_name = $trail_renderer->get_last_item_link_class();
+
+			if ( !empty( $class_name ) ) {
+				$item->set_attributes(
+					array(
+						'class' => $class_name,
+					)
+				);
+			}
+		}
+	}
+
 
 	/**
 	 * Retrieve the item to render.

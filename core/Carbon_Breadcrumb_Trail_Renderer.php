@@ -77,6 +77,14 @@ class Carbon_Breadcrumb_Trail_Renderer {
 	 * @var bool
 	 */
 	protected $last_item_link = true;
+	
+	/**
+	 * Last item link class
+	 *
+	 * @access protected
+	 * @var string
+	 */
+	protected $last_item_link_class = '';
 
 	/**
 	 * Whether to display the home item.
@@ -323,6 +331,28 @@ class Carbon_Breadcrumb_Trail_Renderer {
 	public function set_last_item_link($last_item_link) {
 		$this->last_item_link = (bool) $last_item_link;
 	}
+	
+	/**
+	 * Whether the last item will be displayed as a link.
+	 *
+	 * @access public
+	 *
+	 * @return bool $last_item_link_class Whether the last item will be displayed as a link.
+	 */
+	public function get_last_item_link_class() {
+		return $this->last_item_link_class;
+	}
+
+	/**
+	 * Change whether the last item will be displayed as a link.
+	 *
+	 * @access public
+	 *
+	 * @param bool $last_item_link_class Whether the last item will be displayed as a link.
+	 */
+	public function set_last_item_link_class($last_item_link_class) {
+		$this->last_item_link_class = $last_item_link_class;
+	}
 
 	/**
 	 * Whether the home item will be displayed.
@@ -408,7 +438,7 @@ class Carbon_Breadcrumb_Trail_Renderer {
 
 		// render the items
 		$items_output = $this->render_items( $trail );
-
+		
 		// implode the breadcrumb items and wrap them with the configured wrappers
 		$output = $this->get_wrapper_before();
 		$output .= implode( $this->get_glue(), $items_output );
@@ -435,9 +465,10 @@ class Carbon_Breadcrumb_Trail_Renderer {
 		$all_items = $trail->get_flat_items();
 
 		foreach ( $all_items as $item ) {
+
 			// allow each item to be filtered right before rendering
 			$item = apply_filters( 'carbon_breadcrumbs_item', $item, $trail, $this, $counter );
-
+			
 			// skip if $item is not a Carbon_Breadcrumb_Item instance
 			if ( ! ( $item instanceof Carbon_Breadcrumb_Item ) ) {
 				continue;
